@@ -291,7 +291,7 @@ function handleStats(stats, selector) {
 	const style = `background-image: conic-gradient(${colorsStr})`
 	elPie.style = style
 
-	const ledendHTML = labels
+	const legendHTML = labels
 		.map((label, idx) => {
 			return `
                 <li>
@@ -303,7 +303,7 @@ function handleStats(stats, selector) {
 		.join('')
 
 	const elLegend = document.querySelector(`.${selector} .legend`)
-	elLegend.innerHTML = ledendHTML
+	elLegend.innerHTML = legendHTML
 }
 
 function cleanStats(stats) {
