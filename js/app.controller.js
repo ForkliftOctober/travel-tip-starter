@@ -18,6 +18,9 @@ window.app = {
 	onSetFilterBy,
 }
 
+// const gGetUserPos = getUserPosition()
+const gGetUserPos = { lat: 30.0519381, lng: 35.0311381 }
+
 function onInit() {
 	loadAndRenderLocs()
 
@@ -32,23 +35,19 @@ function onInit() {
 			flashMsg('Cannot init map')
 		})
 }
-// TODO: fjdsklafjdslk
-// TODO: add distance of user from location
+
 function renderLocs(locs) {
 	const selectedLocId = getLocIdFromQueryParams()
 	console.log('locs:', locs)
 	var strHTML = locs
 		.map(loc => {
 			const className = loc.id === selectedLocId ? 'active' : ''
-			const distance = getDistance(getUserPosition, { lat: loc.geo.lat, lng: loc.geo.lng }, 'K') // Calc distance
+			const distance = utilService.getDistance(gGetUserPos, { lat: loc.geo.lat, lng: loc.geo.lng }, 'K') // Calc distance
 			return `
         <li class="loc ${className}" data-id="${loc.id}">
             <h4>  
                 <span>${loc.name}</span>
-
-				<h5>Distance
-                <span>${distance}</span></h5>
-				
+				<h5>Distance <span>${distance}</span><span> km</span></h5>
                 <span title="${loc.rate} stars">${'★'.repeat(loc.rate)}</span>
             </h4>
             <p class="muted">

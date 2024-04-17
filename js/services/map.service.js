@@ -8,17 +8,37 @@ export const mapService = {
 }
 
 // TODO: Enter your API Key
-const API_KEY = ''
+const API_KEY = 'AIzaSyB9EWH8ukD0r6idZ7ZzYNcgY9uax5PcmaM'
+var gMarkerLib
+var gMapLib
 var gMap
 var gMarker
 
 function initMap(lat = 32.0749831, lng = 34.9120554) {
-	return _connectGoogleApi().then(() => {
-		gMap = new google.maps.Map(document.querySelector('.map'), {
-			center: { lat, lng },
-			zoom: 8,
+	return _connectGoogleApi()
+		.then(() => google.maps.importLibrary('maps'))
+		.then(mapsLibrary => {
+			const { Map } = mapsLibrary
+			gMapLib = Map
+			return google.maps.importLibrary('marker')
 		})
-	})
+		.then(markerLibrary => {
+			const { AdvancedMarkerElement } = markerLibrary
+			gMarkerLib = AdvancedMarkerElement
+			gMap = new gMapLib(document.querySelector('.map'), {
+				center: { lat, lng },
+				zoom: 8,
+				mapId: API_KEY,
+			})
+		})
+	// ---- depreciated method -----
+	// .then(() => {
+	//     gMap = new google.maps.Map(
+	//         document.querySelector('.map'), {
+	//         center: { lat, lng },
+	//         zoom: 8
+	//     })
+	// })
 }
 
 function panTo({ lat, lng, zoom = 15 }) {
@@ -56,7 +76,10 @@ function lookupAddressGeo(geoOrAddress) {
 
 function addClickListener(cb) {
 	gMap.addListener('click', mapsMouseEvent => {
-		const geo = { lat: mapsMouseEvent.latLng.lat(), lng: mapsMouseEvent.latLng.lng() }
+		const geo = {
+			lat: mapsMouseEvent.latLng.lat(),
+			lng: mapsMouseEvent.latLng.lng(),
+		}
 		lookupAddressGeo(geo).then(cb)
 	})
 }
@@ -64,7 +87,8 @@ function addClickListener(cb) {
 function setMarker(loc) {
 	gMarker && gMarker.setMap(null)
 	if (!loc) return
-	gMarker = new google.maps.marker.AdvancedMarkerElement({
+	// uses the new marker library from the api
+	gMarker = new gMarkerLib({
 		position: loc.geo,
 		map: gMap,
 		title: loc.name,
