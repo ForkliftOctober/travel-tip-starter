@@ -35,7 +35,7 @@ function onInit() {
 
 function renderLocs(locs) {
 	const selectedLocId = getLocIdFromQueryParams()
-	// console.log('locs:', locs)
+	console.log('locs:', locs)
 	var strHTML = locs
 		.map(loc => {
 			const className = loc.id === selectedLocId ? 'active' : ''
@@ -261,6 +261,10 @@ function onSetFilterBy({ txt, minRate }) {
 function renderLocStats() {
 	locService.getLocCountByRateMap().then(stats => {
 		handleStats(stats, 'loc-stats-rate')
+	})
+
+	locService.getLocCountByUpdatedMap().then(stats => {
+		handleStats(stats, 'loc-stats-updatetime')
 	})
 }
 
