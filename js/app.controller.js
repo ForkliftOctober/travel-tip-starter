@@ -18,8 +18,7 @@ window.app = {
 	onSetFilterBy,
 }
 
-// const gGetUserPos = getUserPosition()
-const gGetUserPos = { lat: 30.0519381, lng: 35.0311381 }
+const gGetUserPos = mapService.getUserPosition()
 
 function onInit() {
 	loadAndRenderLocs()
