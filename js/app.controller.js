@@ -33,16 +33,22 @@ function onInit() {
 		})
 }
 
+// TODO: add distance of user from location
 function renderLocs(locs) {
 	const selectedLocId = getLocIdFromQueryParams()
-	// console.log('locs:', locs)
+	console.log('locs:', locs)
 	var strHTML = locs
 		.map(loc => {
 			const className = loc.id === selectedLocId ? 'active' : ''
+			const distance = getDistance(getUserPosition, { lat: loc.geo.lat, lng: loc.geo.lng }, 'K') // Calc distance
 			return `
         <li class="loc ${className}" data-id="${loc.id}">
             <h4>  
                 <span>${loc.name}</span>
+
+				<h5>Distance
+                <span>${distance}</span></h5>
+				
                 <span title="${loc.rate} stars">${'★'.repeat(loc.rate)}</span>
             </h4>
             <p class="muted">
