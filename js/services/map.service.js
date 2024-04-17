@@ -64,7 +64,7 @@ function addClickListener(cb) {
 function setMarker(loc) {
 	gMarker && gMarker.setMap(null)
 	if (!loc) return
-	gMarker = new google.maps.Marker({
+	gMarker = new google.maps.marker.AdvancedMarkerElement({
 		position: loc.geo,
 		map: gMap,
 		title: loc.name,
