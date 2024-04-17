@@ -48,41 +48,44 @@ function onInit() {
 
 function renderLocs(locs) {
 	const selectedLocId = getLocIdFromQueryParams()
-	console.log('locs:', locs)
-	var strHTML = locs
-		.map(loc => {
-			const className = loc.id === selectedLocId ? 'active' : ''
-			const distance = utilService.getDistance(gUserPos, { lat: loc.geo.lat, lng: loc.geo.lng }, 'K') // Calc distance
-			return `
-        <li class="loc ${className}" data-id="${loc.id}">
-            <h4>  
-                <span>${loc.name}</span>
-                <h5>Distance <span>${distance}</span><span> km</span></h5>
-                <span title="${loc.rate} stars">${'★'.repeat(loc.rate)}</span>
-            </h4>
-            <p class="muted">
-                Created: ${utilService.elapsedTime(loc.createdAt)}
-                ${loc.createdAt !== loc.updatedAt ? ` | Updated: ${utilService.elapsedTime(loc.updatedAt)}` : ''}
-            </p>
-            <div class="loc-btns">     
-               <button title="Delete" onclick="app.onRemoveLoc('${loc.id}')">🗑️</button>
-               <button title="Edit" onclick="app.onUpdateLoc('${loc.id}')">✏️</button>
-               <button title="Select" onclick="app.onSelectLoc('${loc.id}')">🗺️</button>
-            </div>     
-        </li>`
-		})
-		.join('')
 
-	const elLocList = document.querySelector('.loc-list')
-	elLocList.innerHTML = strHTML || 'No locs to show'
+	// Wait for gUserPos to resolve
+	gUserPos.then(userPos => {
+		const strHTML = locs
+			.map(loc => {
+				const className = loc.id === selectedLocId ? 'active' : ''
+				const distance = utilService.getDistance(userPos, { lat: loc.geo.lat, lng: loc.geo.lng }, 'K') // Calc distance
+				return `
+          <li class="loc ${className}" data-id="${loc.id}">
+              <h4>  
+                  <span>${loc.name}</span>
+                  <h5>Distance <span>${distance}</span><span> km</span></h5>
+                  <span title="${loc.rate} stars">${'★'.repeat(loc.rate)}</span>
+              </h4>
+              <p class="muted">
+                  Created: ${utilService.elapsedTime(loc.createdAt)}
+                  ${loc.createdAt !== loc.updatedAt ? ` | Updated: ${utilService.elapsedTime(loc.updatedAt)}` : ''}
+              </p>
+              <div class="loc-btns">     
+                 <button title="Delete" onclick="app.onRemoveLoc('${loc.id}')">🗑️</button>
+                 <button title="Edit" onclick="app.onUpdateLoc('${loc.id}')">✏️</button>
+                 <button title="Select" onclick="app.onSelectLoc('${loc.id}')">🗺️</button>
+              </div>     
+          </li>`
+			})
+			.join('')
 
-	renderLocStats()
+		const elLocList = document.querySelector('.loc-list')
+		elLocList.innerHTML = strHTML || 'No locs to show'
 
-	if (selectedLocId) {
-		const selectedLoc = locs.find(loc => loc.id === selectedLocId)
-		displayLoc(selectedLoc)
-	}
-	document.querySelector('.debug').innerText = JSON.stringify(locs, null, 2)
+		renderLocStats()
+
+		if (selectedLocId) {
+			const selectedLoc = locs.find(loc => loc.id === selectedLocId)
+			displayLoc(selectedLoc)
+		}
+		document.querySelector('.debug').innerText = JSON.stringify(locs, null, 2)
+	})
 }
 
 function onRemoveLoc(locId) {
