@@ -19,6 +19,7 @@ window.app = {
 }
 
 const gGetUserPos = mapService.getUserPosition()
+// const gGetUserPos = getUserPosition()
 
 function onInit() {
 	loadAndRenderLocs()
