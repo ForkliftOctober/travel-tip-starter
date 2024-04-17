@@ -32,7 +32,7 @@ function onInit() {
 			flashMsg('Cannot init map')
 		})
 }
-
+// TODO: fjdsklafjdslk
 // TODO: add distance of user from location
 function renderLocs(locs) {
 	const selectedLocId = getLocIdFromQueryParams()
