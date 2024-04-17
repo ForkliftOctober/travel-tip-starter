@@ -18,11 +18,21 @@ window.app = {
 	onSetFilterBy,
 }
 
-const gGetUserPos = mapService.getUserPosition()
-// const gGetUserPos = getUserPosition()
+// const gUserPos = { lat: 43.65437329, lng: 41.43218792 }
+const gUserPos = mapService
+	.getUserPosition()
+	.then(loc => {
+		console.log('gUserPos:', loc)
+		return loc
+	})
+	.catch(err => {
+		console.error('OOPs:', err)
+		flashMsg('Cannot get your position')
+	})
 
 function onInit() {
 	loadAndRenderLocs()
+	console.log('gUserPos: ', gUserPos)
 
 	mapService
 		.initMap()
@@ -42,12 +52,12 @@ function renderLocs(locs) {
 	var strHTML = locs
 		.map(loc => {
 			const className = loc.id === selectedLocId ? 'active' : ''
-			const distance = utilService.getDistance(gGetUserPos, { lat: loc.geo.lat, lng: loc.geo.lng }, 'K') // Calc distance
+			const distance = utilService.getDistance(gUserPos, { lat: loc.geo.lat, lng: loc.geo.lng }, 'K') // Calc distance
 			return `
         <li class="loc ${className}" data-id="${loc.id}">
             <h4>  
                 <span>${loc.name}</span>
-				<h5>Distance <span>${distance}</span><span> km</span></h5>
+                <h5>Distance <span>${distance}</span><span> km</span></h5>
                 <span title="${loc.rate} stars">${'★'.repeat(loc.rate)}</span>
             </h4>
             <p class="muted">
