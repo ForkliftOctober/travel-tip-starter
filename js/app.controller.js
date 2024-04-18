@@ -105,19 +105,23 @@ function onSearchAddress(ev) {
 }
 
 function onAddLoc(geo) {
-	const locName = prompt('Loc name', geo.address || 'Just a place')
+	const elDialog = document.querySelector('dialog')
+	const rate = elDialog.querySelector('.rate-input').value
+	const name = elDialog.querySelector('.name-input').value
+	const locName = name
 	if (!locName) return
 
 	const loc = {
 		name: locName,
-		rate: +prompt(`Rate (1-5)`, '3'),
+		rate: rate || 0,
 		geo,
 	}
 	locService
 		.save(loc)
 		.then(savedLoc => {
-			flashMsg(`Added Location (id: ${savedLoc.id})`)
+			flashMsg(`Added Location (name: ${name})`)
 			utilService.updateQueryParams({ locId: savedLoc.id })
+			elDialog.close()
 			loadAndRenderLocs()
 		})
 		.catch(err => {
@@ -201,6 +205,7 @@ function onOpenModal(locId, str) {
 			elDialog.setAttribute('data-locid', loc.id)
 		})
 	} else {
+		elNameInput.value = locId.address
 		elDialog.removeAttribute('data-locid')
 		elDialog.setAttribute('data-geodata', JSON.stringify(locId))
 	}
