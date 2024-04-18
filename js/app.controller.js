@@ -8,7 +8,7 @@ window.onload = onInit
 // functions that are called from DOM are defined on a global app object
 window.app = {
 	onRemoveLoc,
-	// onUpdateLoc,
+	onUpdateLoc,
 	onSelectLoc,
 	onPanToUserPos,
 	onSearchAddress,
@@ -17,7 +17,10 @@ window.app = {
 	onSetSortBy,
 	onSetFilterBy,
 	onOpenModal,
+	onUpdateOrAdd,
 }
+
+
 
 function onInit() {
 	loadAndRenderLocs()
@@ -52,7 +55,7 @@ function renderLocs(locs) {
             </p>
             <div class="loc-btns">     
                <button title="Delete" onclick="app.onRemoveLoc('${loc.id}')">🗑️</button>
-               <button title="Edit" onclick="app.onOpenModal('${loc.id}')">✏️</button>
+               <button title="Edit" onclick="app.onOpenModal('${loc.id}', 'update' )">✏️</button>
                <button title="Select" onclick="app.onSelectLoc('${loc.id}')">🗺️</button>
             </div>     
         </li>`
@@ -148,41 +151,57 @@ function onPanToUserPos() {
 		})
 }
 
-// function onUpdateLoc(locId) {
-// 	locService.getById(locId).then(loc => {
-// 		const rate = prompt('New rate?', loc.rate)
-// 		if (rate !== loc.rate) {
-// 			loc.rate = rate
-// 			locService
-// 				.save(loc)
-// 				.then(savedLoc => {
-// 					flashMsg(`Rate was set to: ${savedLoc.rate}`)
-// 					loadAndRenderLocs()
-// 				})
-// 				.catch(err => {
-// 					console.error('OOPs:', err)
-// 					flashMsg('Cannot update location')
-// 				})
-// 		}
-// 	})
-// }
+function onUpdateLoc(locId) {
+	locService.getById(locId).then(loc => {
+		const elDialog = document.querySelector('dialog')
+		const rate = elDialog.querySelector('.rate-input').value
+		const name = elDialog.querySelector('.name-input').value
 
-function onOpenModal(locId) {
+		if (rate !== loc.rate || name !== loc.name) {
+			loc.rate = rate
+			loc.name = name
+			locService
+				.save(loc)
+				.then(savedLoc => {
+					// flashMsg(`Rate was set to: ${savedLoc.rate}`)
+					flashMsg(`Location Updated Successfully!`)
+					elDialog.close()
+					loadAndRenderLocs()
+				})
+				.catch(err => {
+					console.error('OOPs:', err)
+					flashMsg('Cannot update location')
+				})
+		}
+	})
+}
+
+function onUpdateOrAdd(ev) {
+	ev.preventDefault()
+
+	const elDialog = document.querySelector('dialog')
+
+	if (elDialog.dataset.geodata) onAddLoc(JSON.parse(elDialog.dataset.geodata))
+	else onUpdateLoc(elDialog.dataset.locid)
+}
+
+function onOpenModal(locId, str) {
 	let elDialog = document.querySelector('dialog')
 	let elNameInput = elDialog.querySelector('.name-input')
 	let elRateInput = elDialog.querySelector('.rate-input')
 
-
 	elNameInput.value = ''
 	elRateInput.value = ''
 
-	if (!locId.address) {
+	if (str) {
 		locService.getById(locId).then(loc => {
 			elNameInput.value = loc.name
 			elRateInput.value = loc.rate
 			elDialog.removeAttribute('data-geodata')
+			elDialog.setAttribute('data-locid', loc.id)
 		})
 	} else {
+		elDialog.removeAttribute('data-locid')
 		elDialog.setAttribute('data-geodata', JSON.stringify(locId))
 	}
 	document.querySelector('dialog').showModal()
