@@ -83,6 +83,7 @@ function renderLocs(locs) {
 
 			if (selectedLocId) {
 				const selectedLoc = locs.find(loc => loc.id === selectedLocId)
+
 				displayLoc(selectedLoc)
 			}
 			document.querySelector('.debug').innerText = JSON.stringify(locs, null, 2)
@@ -200,18 +201,28 @@ function onSelectLoc(locId) {
 }
 
 function displayLoc(loc) {
-	document.querySelector('.loc.active')?.classList?.remove('active')
-	document.querySelector(`.loc[data-id="${loc.id}"]`).classList.add('active')
-
-	mapService.panTo(loc.geo)
-	mapService.setMarker(loc)
-
 	const el = document.querySelector('.selected-loc')
 	el.querySelector('.loc-name').innerText = loc.name
 	el.querySelector('.loc-address').innerText = loc.geo.address
 	el.querySelector('.loc-rate').innerHTML = '★'.repeat(loc.rate)
 	el.querySelector('[name=loc-copier]').value = window.location
 	el.classList.add('show')
+
+	// Calculate distance using the promise
+	gUserPos
+		.then(userPos => {
+			let distance = `<span class="distance">Distance: <span>${utilService.getDistance(userPos, { lat: loc.geo.lat, lng: loc.geo.lng }, 'K')}</span> km</span>`
+			el.querySelector('.loc-distance').innerHTML = distance // Set distance HTML
+		})
+		.catch(err => {
+			console.error('Oops:', err)
+		})
+
+	document.querySelector('.loc.active')?.classList?.remove('active')
+	document.querySelector(`.loc[data-id="${loc.id}"]`).classList.add('active')
+
+	mapService.panTo(loc.geo)
+	mapService.setMarker(loc)
 
 	utilService.updateQueryParams({ locId: loc.id })
 }
