@@ -102,16 +102,17 @@ function getLocCountByRateMap() {
 }
 
 function getLocCountByUpdatedMap() {
+	const now = new Date().toISOString().split('T')[0]
+
 	return storageService.query(DB_KEY).then(locs => {
 		const locCountByUpdateMap = locs.reduce(
 			(map, loc) => {
-				const now = Date.now()
 				const { createdAt, updatedAt } = loc
-				const elapsedTime = (now - updatedAt) / 1000 / 60 / 60 / 24
+				const updateDate = new Date(updatedAt).toISOString().split('T')[0]
 
 				if (createdAt !== updatedAt) {
-					if (elapsedTime > 1) map.past++
-					else map.today++
+					if (now === updateDate) map.today++
+					else map.past++
 				} else map.never++
 
 				return map
