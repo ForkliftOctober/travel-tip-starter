@@ -1,12 +1,24 @@
+/* :root {
+	--bg1: darkslateblue;
+	--bg2: darkorchid;
+	--bg3: darkmagenta;
+	--color1: aliceblue;
+	--color2: deeppink;
+	--color3: gold;
+	--color4: goldenrod;
+	--gray1: lightgray;
+} */
+
+/* BANANA THEME */
 :root {
-    --bg1: darkslateblue;
-    --bg2: darkorchid;
-    --bg3: darkmagenta;
-    --color1: aliceblue;
-    --color2: deeppink;
-    --color3: gold;
-    --color4: goldenrod;
-    --gray1: lightgray;
+	--bg1: #efae12;
+	--bg2: #fed046;
+	--bg3: #ebac21;
+	--color1: #c9bc1f;
+	--color2: #f3c926;
+	--color3: #fac500;
+	--color4: #dfbb02;
+	--gray1: #c9b984;
 }
 
 /* Another theme */

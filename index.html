@@ -6,6 +6,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="stylesheet" href="css/main.css" />
 	<title>TravelTip</title>
+	<link rel="icon"
+		href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='gray'%3E%3Ctext y='50' x='50' font-size='90' text-anchor='middle' dominant-baseline='middle'%3E🍌%3C/text%3E%3C/svg%3E" />
 </head>
 
 <body>
@@ -14,6 +16,7 @@
 		<section class="selected-loc">
 			<h2>Location: <span class="loc-name"></span> <span class="loc-rate"></span></h2>
 			<h4 class="loc-address"></h4>
+			<h4 class="loc-distance"></h4>
 			<button onclick="app.onCopyLoc()">Copy location</button>
 			<button onclick="app.onShareLoc()">Share location</button>
 			<input name="loc-copier" />
@@ -78,6 +81,17 @@
 	</main>
 	<pre class="debug" hidden></pre>
 	<div class="user-msg"></div>
+
+	<dialog>
+		<form action="" onsubmit="app.onUpdateOrAdd(event)">
+			<label for=""></label>
+			<input class="name-input" type="text">
+			<label for=""></label>
+			<input class="rate-input" type="number">
+			<button>Save</button>
+		</form>
+	</dialog>
+
 	<script type="module" src="js/app.controller.js"></script>
 </body>
 

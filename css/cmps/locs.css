@@ -1,95 +1,100 @@
 .locs-container {
-    background-color: var(--bg3);
-    padding: 0.5em;
-    min-height: 100vh;
+	background-color: var(--bg3);
+	padding: 0.5em;
+	min-height: 100vh;
 }
 
 .loc-list {
-    list-style: none;
-    padding: 0;
+	list-style: none;
+	padding: 0;
 }
 
 .loc-list li {
-    padding-bottom: .2em;
-    border-bottom: 1px solid #222;
+	padding-bottom: 0.2em;
+	border-bottom: 1px solid #222;
 }
 
 .loc-list li h4 {
-    display: flex;
-    justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 }
 
 .loc-list li.active {
-    color: var(--color3);
+	color: var(--color3);
 }
 
 .loc-list li.active .muted {
-    color: var(--color4);
+	color: var(--color4);
 }
 
 .loc-btns {
-    text-align: end;
+	text-align: end;
 }
 
 .map {
-    width: 100%;
-    height: 100vh;
+	width: 100%;
+	height: 100vh;
 }
 
 .form-search {
-    display: block;
-    text-align: end;
+	display: block;
+	text-align: end;
 }
 
 .btn-user-pos {
-    background-color: var(--bg2);
-    background-image: url(../../img/user-loc.png);
-    background-size: cover;
-    width: 2em;
-    height: 2em;
+	background-color: var(--bg2);
+	background-image: url(../../img/user-loc.png);
+	background-size: cover;
+	width: 2em;
+	height: 2em;
 }
 
 .btn-user-pos:hover {
-    background-color: whitesmoke;
+	background-color: whitesmoke;
 }
 
 .loc-filter {
-    background-color: var(--bg1);
-    padding: 0.3em;
+	background-color: var(--bg1);
+	padding: 0.3em;
 }
 
-.loc-filter input[type=text] {
-    width: 98%;
-    margin-bottom: .5em;
+.loc-filter input[type='text'] {
+	width: 98%;
+	margin-bottom: 0.5em;
 }
 
 .pie {
-    display: inline-block;
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    /* background-image: conic-gradient(orange 0%, orange 64%, blue 64%, blue 81%, black 81%, black 100%); */
+	display: inline-block;
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	/* background-image: conic-gradient(orange 0%, orange 64%, blue 64%, blue 81%, black 81%, black 100%); */
 }
 
 .loc-stats h3 {
-    margin-block-end: 0;
+	margin-block-end: 0;
 }
 
 .loc-stats .stats-container {
-    display: flex;
-    /* flex-direction: column; */
+	display: flex;
+	/* flex-direction: column; */
 }
 
 .loc-stats ul {
-    list-style-type: none;
-    display: inline-block;
-    text-transform: capitalize;
+	list-style-type: none;
+	display: inline-block;
+	text-transform: capitalize;
 }
 
 .loc-stats .pie-label {
-    display: inline-block;
-    background-color: black;
-    width: 1em;
-    height: 1em;
-    margin-inline-end: 0.3em;
+	display: inline-block;
+	background-color: black;
+	width: 1em;
+	height: 1em;
+	margin-inline-end: 0.3em;
+}
+
+span .distance {
+	font-weight: 100;
+	font-size: 0.9em;
 }
